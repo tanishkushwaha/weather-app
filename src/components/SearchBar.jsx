@@ -43,6 +43,7 @@ const SearchBar = ({ states, stateSetters }) => {
         label="Search City"
         value={states.inputCity}
         onChange={handleInput}
+        onKeyDown={(e) => e.key == 'Enter' && handleSearchButton()}
         sx={{ width: {xs: '65%', sm: '80%'}, height: '3.5rem' }}
       />
 
