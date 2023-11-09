@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import './App.css';
-import SearchBar from './components/SearchBar';
 import HumidityPanel from './components/HumidityPanel';
 import PressurePanel from './components/PressurePanel';
 import WindPanel from './components/WindPanel';
+import getWeatherData from './getWeatherData';
+import HamburgerDrawer from './components/HamburgerDrawer';
+import './App.css';
 
+import MenuIcon from '@mui/icons-material/Menu';
 import { 
   Box, 
   Container,
   Card, 
   CardMedia, 
   CardContent, 
-  Typography
+  Typography,
+  IconButton
 } from '@mui/material';
 
 const App = () => {
@@ -19,6 +22,7 @@ const App = () => {
   const [inputCity, setInputCity] = useState('New Delhi');
   const [weatherData, setWeatherData] = useState(null);
   const [isNight, setIsNight] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const icons = {
     Clear: isNight ? 'Clear-Night.svg' : 'Clear.svg',
@@ -34,6 +38,17 @@ const App = () => {
     Snow: 'Snow.svg',
     Thunderstorm: 'Thunderstorm.svg',
     Tornado: 'Tornado.svg'
+  };
+
+  useEffect(() => {
+    getWeatherData(inputCity)
+      .then(data => {
+        setWeatherData(data);
+      });
+  }, []);
+
+  const toggleDrawer = (state) => {
+    setDrawerOpen(state);
   };
 
   useEffect(() => {
@@ -55,26 +70,47 @@ const App = () => {
 
   return (
     <>
-      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <HamburgerDrawer
+        states={{inputCity: inputCity, weatherData: weatherData, drawerOpen: drawerOpen}} 
+        stateSetters={{
+          setInputCity: setInputCity, 
+          setWeatherData: setWeatherData,
+          setIsNight: setIsNight,
+          setDrawerOpen: setDrawerOpen
+        }} 
+      />
+      
+      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: '2rem' }}>
         
         <Container maxWidth='md'>
 
-          <SearchBar 
-            states={{inputCity: inputCity, weatherData: weatherData}} 
-            stateSetters={{
-              setInputCity: setInputCity, 
-              setWeatherData: setWeatherData,
-              setIsNight: setIsNight
-            }} 
-          />
-
-          <Card sx={{ pt: '1rem' }}>
+          <Card sx={{ bgcolor: 'background.default', pt: '1rem' }}>
 
             <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
 
-              <Typography variant="h4" sx={{ fontFamily: 'Rubik' }}>
-                {weatherData != null && weatherData.name}
-              </Typography>
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '4rem' }}>
+
+                  <IconButton onClick={toggleDrawer}>
+                    <MenuIcon fontSize='large' />
+                  </IconButton>
+
+                </Box>
+
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                  <Typography variant="h4" sx={{ fontFamily: 'Rubik', ml: 'auto', flex: '1' }}>
+                    {weatherData != null && weatherData.name}
+                  </Typography>
+
+                </Box>
+
+                <Box sx={{ width: '4rem' }}>
+
+                </Box>
+
+              </Box>
 
               <CardMedia 
                 title="Weather Icon" 
