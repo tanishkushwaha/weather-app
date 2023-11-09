@@ -71,17 +71,21 @@ const App = () => {
   return (
     <>
       <HamburgerDrawer
-        states={{inputCity: inputCity, weatherData: weatherData, drawerOpen: drawerOpen}} 
+        states={{
+          inputCity, 
+          weatherData, 
+          drawerOpen
+        }} 
         stateSetters={{
-          setInputCity: setInputCity, 
-          setWeatherData: setWeatherData,
-          setIsNight: setIsNight,
-          setDrawerOpen: setDrawerOpen
+          setInputCity, 
+          setWeatherData,
+          setIsNight,
+          setDrawerOpen
         }} 
       />
       
       <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: '2rem' }}>
-        
+
         <Container maxWidth='md'>
 
           <Card sx={{ bgcolor: 'background.default', pt: '1rem' }}>
