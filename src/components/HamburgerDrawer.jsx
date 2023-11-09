@@ -56,7 +56,6 @@ const HamburgerDrawer = ({ states, stateSetters }) => {
       anchor="left"
       open={states.drawerOpen}
       onClose={() => stateSetters.setDrawerOpen(false)}
-      
     >
 
       <List>
